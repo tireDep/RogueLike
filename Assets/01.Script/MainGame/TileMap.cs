@@ -12,7 +12,7 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 	// Awake() : 한번만 실행됨
 	void Start ()		// 활성화 될 때 마다 한번 실행
 	{
-		Create();
+		// Create(); => GameScene에서 통제
 	}
 	
 	void Update ()	// 매번 실행
@@ -20,10 +20,10 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		// Debug.Log("HelloWorld");
 	}
 
-	void Create()
+	public void Create()
 	{
 		// 맵 타일 출력 test
-		Sprite[] spriteList = Resources.LoadAll<Sprite>("MapSprite");
+		Sprite[] spriteList = Resources.LoadAll<Sprite>("roguelikeSheet_transparent");
 
 		/*
 		for (int i = 0; i < spriteList.Length; i++)
@@ -42,8 +42,8 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		// 모든 맵 리스트 출력
 		*/
 
-		int width = 16;
-		int height = 16;
+		int width = 32;
+		int height = 32;
 		// 맵 생성 변수
 
 		// 1층 - 바닥
@@ -57,7 +57,7 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 				tileObject.transform.localPosition = Vector3.zero;  // 0x0x0 초기화
 																	// transform : 위치나 크기 관련
 																	// wordlposition, localposition : 월드 위치 표시, 지역내 위치 표시(특정 지역어디에 있는가) => 쉬운 계산을 위해서
-				int spriteIndex = 23;   // int spriteIndex = x + (y * height);
+				int spriteIndex = 5;   // int spriteIndex = x + (y * height);
 				if (spriteIndex<spriteList.Length)
 				{
 					/*
@@ -85,7 +85,7 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 					tileObject.transform.localScale = Vector3.one;  // 1x1x1 초기화
 					tileObject.transform.localPosition = Vector3.zero;  // 0x0x0 초기화
 
-					int spriteIndex = 126;
+					int spriteIndex = 291;
 					if (spriteIndex < spriteList.Length)
 					{
 						MapTile mapTile = tileObject.GetComponent<MapTile>();
@@ -98,5 +98,10 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		}   // for문 - y
 
 	}	// Cearte()
+
+	public void SetCharcter(int tileX, int tileY, Player character)
+	{
+
+	}	// SetCharcter(int tileX, int tileY, Player player)
 
 }	// TileMap Class 
