@@ -8,8 +8,8 @@ public class Player : MonoBehaviour {
 	void Start ()
 	{
 		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x)
-		int tileX = 5;
-		int tileY = 5;
+		int tileX = 1;
+		int tileY = 0;
 		// 해당위치의 타일
 
 		TileMap map = GameManager.Instance.GetMap();

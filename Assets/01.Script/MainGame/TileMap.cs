@@ -20,6 +20,8 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		// Debug.Log("HelloWorld");
 	}
 
+	MapTile[,] _maptileArray;	// c# 2차원 배열
+
 	public void Create()
 	{
 		// 맵 타일 출력 test
@@ -46,6 +48,8 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		int height = 32;
 		// 맵 생성 변수
 
+		_maptileArray = new MapTile[height, width];
+
 		// 1층 - 바닥
 		for(int y=0;y<height;y++)
 		{
@@ -66,7 +70,8 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 					*/
 
 					MapTile mapTile = tileObject.GetComponent<MapTile>();
-					mapTile.Init(spriteList[spriteIndex], x-8, y-8);	// 출력위치 조정용 -8
+					mapTile.Init(spriteList[spriteIndex], x-8, y-8);    // 출력위치 조정용 -8
+					_maptileArray[y, x] = mapTile;
 					// 캡슐화
 				}
 			}	// for문 - x
@@ -97,11 +102,17 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 			}   // for문 - x
 		}   // for문 - y
 
-	}	// Cearte()
+	}   // Cearte()
+
+	MapTile GetMapTile(int tileX, int tileY)
+	{
+		return _maptileArray[tileY, tileX];	// c# 2차원 배열
+	}
 
 	public void SetCharcter(int tileX, int tileY, Player character)
 	{
-
+		MapTile mapTile = GetMapTile(tileX, tileY);
+		character.transform.position = mapTile.transform.position;
 	}	// SetCharcter(int tileX, int tileY, Player player)
 
 }	// TileMap Class 
