@@ -113,6 +113,12 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 	{
 		MapTile mapTile = GetMapTile(tileX, tileY);
 		character.transform.position = mapTile.transform.position;
-	}	// SetCharcter(int tileX, int tileY, Player player)
+	}   // SetCharcter(int tileX, int tileY, Player player)
 
+
+	public bool CanMove(int tileX, int tileY) // 해당 타일로 이동이 가능한지 판별함수
+	{
+		// tileX, tileY 위치에 있는 타일이 갈 수 있는가? => 장애물, 범위 안
+		return GetMapTile(tileX, tileY).CanMove();
+	}
 }	// TileMap Class 

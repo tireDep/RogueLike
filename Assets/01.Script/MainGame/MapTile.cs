@@ -10,4 +10,12 @@ public class MapTile : MonoBehaviour
 		gameObject.transform.localPosition = new Vector2(x, y);
 	}	// Init()
 
+	public bool CanMove()
+	{
+		// 갈 수 있는 타일인지 아닌지만 판별
+		// return true;
+		
+		return false;
+	}
+
 } // MapTile Class
