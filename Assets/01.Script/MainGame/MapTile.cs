@@ -8,14 +8,19 @@ public class MapTile : MonoBehaviour
 	{
 		gameObject.GetComponent<SpriteRenderer>().sprite =sprite;	// 자기자신
 		gameObject.transform.localPosition = new Vector2(x, y);
-	}	// Init()
+	}   // Init()
+
+	bool _canMove = false;
 
 	public bool CanMove()
 	{
 		// 갈 수 있는 타일인지 아닌지만 판별
-		// return true;
-		
-		return false;
+		return _canMove;
+	}
+
+	public void SetCanMove(bool setPostion)
+	{
+		_canMove = setPostion;
 	}
 
 } // MapTile Class

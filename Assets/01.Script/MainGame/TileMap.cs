@@ -71,6 +71,7 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 
 					MapTile mapTile = tileObject.GetComponent<MapTile>();
 					mapTile.Init(spriteList[spriteIndex], x-8, y-8);    // 출력위치 조정용 -8
+					mapTile.SetCanMove(true);
 					_maptileArray[y, x] = mapTile;
 					// 캡슐화
 				}
@@ -95,6 +96,9 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 					{
 						MapTile mapTile = tileObject.GetComponent<MapTile>();
 						mapTile.Init(spriteList[spriteIndex], x - 8, y - 8);
+						/* mapTile.SetCanMove(false);
+						// _maptileArray[y, x] = mapTile;  //1안) 2층 맵타일로 대체 -> 1층에 있는게 뭔지를 모름 */
+						_maptileArray[y, x].SetCanMove(false);	// 2안) 1층 맵타일을 false로 돌림 -> 2층에 있는게 뭔지를 모름 => 후에 setting 다시 해야함 (주로 사용!)
 						// 캡슐화
 					}
 				}

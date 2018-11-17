@@ -11,12 +11,24 @@ public class Player : MonoBehaviour {
 
 	public void Init()	// GameScene에서 실행됨, Null error 해결
 	{
-		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x)
-		_tileX = 0;
-		_tileY = 0;
-		// 해당위치의 타일
-
+		// 캐릭터 맵상에 random 배치
 		_map = GameManager.Instance.GetMap();
+
+		int x = 0;
+		int y = 0;
+
+		while(true)
+		{
+			x = Random.Range(0, 32);
+			y = Random.Range(0, 32);
+
+			if (true == _map.CanMove(x,y))
+				break;
+		}
+
+		_tileX = x;
+		_tileY = y;
+		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x), 해당위치의 타일
 		_map.SetCharcter(_tileX, _tileY, this);
 	}
 
