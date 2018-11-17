@@ -12,7 +12,7 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 	// Awake() : 한번만 실행됨
 	void Start ()		// 활성화 될 때 마다 한번 실행
 	{
-		// Create(); => GameScene에서 통제
+		// Create(); // => GameScene에서 통제
 	}
 	
 	void Update ()	// 매번 실행
