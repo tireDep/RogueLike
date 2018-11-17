@@ -11,16 +11,31 @@ public class MapTile : MonoBehaviour
 	}   // Init()
 
 	bool _canMove = false;
+	MapObject _mapObject;
 
-	public bool CanMove()
+	public bool CanMove()	// 내가 갈 수 있는 타일인지 유무
 	{
-		// 갈 수 있는 타일인지 아닌지만 판별
-		return _canMove;
+		if(null!=_mapObject)	// 갈 수 잇는 오브젝트인지 판별
+		{
+			return _mapObject.CanMove();
+		}
+		return _canMove;	// 지형검사
 	}
 
 	public void SetCanMove(bool setPostion)
 	{
 		_canMove = setPostion;
+	}
+
+	public void SetMapObject(MapObject mapObject)
+	{
+		_mapObject = mapObject;
+		mapObject.transform.position = gameObject.transform.position;
+	}
+
+	public void ResetMapObject()
+	{
+		_mapObject = null;
 	}
 
 } // MapTile Class

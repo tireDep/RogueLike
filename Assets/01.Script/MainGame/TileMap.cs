@@ -113,15 +113,21 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		return _maptileArray[tileY, tileX];	// c# 2차원 배열
 	}
 
-	public void SetCharcter(int tileX, int tileY, Character character)
+	public void SetMapObject(int tileX, int tileY, MapObject mapObject)
 	{
 		MapTile mapTile = GetMapTile(tileX, tileY);
-		character.transform.position = mapTile.transform.position;
+		mapTile.SetMapObject(mapObject);
 	}   // SetCharcter(int tileX, int tileY, Character character)
 
 	public bool CanMove(int tileX, int tileY) // 해당 타일로 이동이 가능한지 판별함수
 	{
 		// tileX, tileY 위치에 있는 타일이 갈 수 있는가? => 장애물, 범위 안
 		return GetMapTile(tileX, tileY).CanMove();
+	}
+
+	public void ResetMapObject(int tileX, int tileY)  // 직전 위치 삭제(초기화)
+	{
+		MapTile mapTile = GetMapTile(tileX, tileY);
+		mapTile.ResetMapObject();
 	}
 }	// TileMap Class 

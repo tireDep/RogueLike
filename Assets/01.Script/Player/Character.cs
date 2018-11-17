@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour {
+public class Character : MapObject
+{
 
 	// Unity 
 	[SerializeField] CharacterModel _model;
@@ -13,10 +14,11 @@ public class Character : MonoBehaviour {
 	{
 		// 캐릭터 맵상에 random 배치
 		_map = GameManager.Instance.GetMap();
+		_canMove = false;
 
 		int x = 0;
 		int y = 0;
-
+		
 		while (true)
 		{
 			x = Random.Range(0, 32);
@@ -29,7 +31,7 @@ public class Character : MonoBehaviour {
 		_tileX = x;
 		_tileY = y;
 		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x), 해당위치의 타일
-		_map.SetCharcter(_tileX, _tileY, this);
+		_map.SetMapObject(_tileX, _tileY, this);
 	}
 
 
@@ -45,11 +47,10 @@ public class Character : MonoBehaviour {
 
 	void SetPosition(int newX, int newY)
 	{
+		_map.ResetMapObject(_tileX, _tileY);	// 직전 위치 삭제(초기화)
 		_tileX = newX;
 		_tileY = newY;
-
-		_map = GameManager.Instance.GetMap();
-		_map.SetCharcter(_tileX, _tileY, this);
+		_map.SetMapObject(_tileX, _tileY, this);
 	}
 
 	// 방향에 맞는 animation 실행, 실질적으로 tilemap에서 움직임
