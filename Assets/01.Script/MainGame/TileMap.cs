@@ -113,12 +113,11 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		return _maptileArray[tileY, tileX];	// c# 2차원 배열
 	}
 
-	public void SetCharcter(int tileX, int tileY, Player character)
+	public void SetCharcter(int tileX, int tileY, Character character)
 	{
 		MapTile mapTile = GetMapTile(tileX, tileY);
 		character.transform.position = mapTile.transform.position;
-	}   // SetCharcter(int tileX, int tileY, Player player)
-
+	}   // SetCharcter(int tileX, int tileY, Character character)
 
 	public bool CanMove(int tileX, int tileY) // 해당 타일로 이동이 가능한지 판별함수
 	{
