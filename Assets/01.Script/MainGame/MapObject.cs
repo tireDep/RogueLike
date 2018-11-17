@@ -6,6 +6,11 @@ public class MapObject : MonoBehaviour {
 
 	protected bool _canMove = false;
 
+	public enum eType
+	{
+		ENEMY 	// , NPC etc..
+	};	// mapObject type
+
 	void Start ()
 	{
 	}

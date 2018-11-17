@@ -80,6 +80,11 @@ public class Character : MapObject
 		int newY = _tileY + 1;
 		if (true == _map.CanMove(_tileX, newY))
 			SetPosition(_tileX, newY);
+
+		else
+		{
+			Collide(_tileX, newY);	// 가고자 하는 타일에서 충돌이 일어남
+		}
 	}   // MoveUp()
 
 	protected void MoveDown()
@@ -91,4 +96,27 @@ public class Character : MapObject
 			SetPosition(_tileX, newY);
 	}   // MoveDown()
 
-}
+
+	void Collide(int tileX, int tileY)	// 충돌 관련 다양한 evt 발생 함수
+	{
+		MapObject mapObject = _map.GetMapObject(tileX, tileY);
+
+		if(null!=mapObject)
+		{
+			switch(mapObject.GetObjectType())
+			{
+				case mapObject.eType.ENEMY:	// 적일경우 공격
+					mapObject.Attack(this);
+					break;
+				default:	// 그외 다른 경우 ex) npc면 대화 등
+					break;
+			}
+		}
+	}	// Collide()
+	
+	/* 
+	 mapobject 타입추가
+	 공격 기능 추가 등등
+	 */
+
+}	// Class()
