@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Character : MapObject
 {
-
 	// Unity 
 	[SerializeField] CharacterModel _model;
+	[SerializeField] CharacterHud _hud;
+
 	int _tileX, _tileY; // 타일 좌표
 	TileMap _map = null;    // 멤버변수
 
@@ -32,6 +33,11 @@ public class Character : MapObject
 		_tileY = y;
 		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x), 해당위치의 타일
 		_map.SetMapObject(_tileX, _tileY, this);
+
+		if(null!=_hud)
+		{
+			_hp = _maxHP;
+		}
 	}
 
 
@@ -61,6 +67,8 @@ public class Character : MapObject
 		int newX = _tileX - 1;
 		if (true == _map.CanMove(newX, _tileY)) // 플레이어가 해당위치로 갈 수 있는지 판별
 			SetPosition(newX, _tileY);
+		else
+			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
 
 	}   // MoveLeft()
 
@@ -71,6 +79,8 @@ public class Character : MapObject
 		int newX = _tileX + 1;
 		if (true == _map.CanMove(newX, _tileY))
 			SetPosition(newX, _tileY);
+		else
+			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveRight()
 
 	protected void MoveUp()
@@ -80,11 +90,8 @@ public class Character : MapObject
 		int newY = _tileY + 1;
 		if (true == _map.CanMove(_tileX, newY))
 			SetPosition(_tileX, newY);
-
 		else
-		{
 			Collide(_tileX, newY);	// 가고자 하는 타일에서 충돌이 일어남
-		}
 	}   // MoveUp()
 
 	protected void MoveDown()
@@ -94,6 +101,8 @@ public class Character : MapObject
 		int newY = _tileY - 1;
 		if (true == _map.CanMove(_tileX, newY))
 			SetPosition(_tileX, newY);
+		else
+			Collide(_tileX, newY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveDown()
 
 
@@ -105,18 +114,75 @@ public class Character : MapObject
 		{
 			switch(mapObject.GetObjectType())
 			{
-				case mapObject.eType.ENEMY:	// 적일경우 공격
-					mapObject.Attack(this);
+				case MapObject.eType.ENEMY:	// 적일경우 공격
+					mapObject.Attacked(this);
 					break;
 				default:	// 그외 다른 경우 ex) npc면 대화 등
 					break;
 			}
 		}
-	}	// Collide()
-	
-	/* 
-	 mapobject 타입추가
-	 공격 기능 추가 등등
-	 */
+	}   // Collide()
 
+	public override void Attacked(MapObject attackObject)  // 가상함수화!
+	{
+		Debug.Log("Character Attacked"); // 충돌 시 공격 들어가는지 확인!
+										 // obj마다 공격방식을 다르게 함 -> 가상함수화
+
+		if (true == _isDead)	// 죽으면 필요x
+			return;
+		Damage(attackObject);
+	}
+
+	bool _isDead = false;
+	int _hp = 100;
+	int _maxHP = 100;	// 최대 hp
+	void Damage(MapObject attackObject)
+	{
+		int atkPoint = attackObject.GetAtkPoint();
+		// todo : item 관련 수치 추가
+		int finalPoint = atkPoint;
+
+		_hp -= finalPoint;
+
+		if(_hp<=0)	// 죽었을 경우
+		{
+			_hp = 0;
+			Dead();
+			_model.PlayDead();
+		}
+		else
+		{
+			_model.PlayDamage();
+			Debug.Log("attackted -"+atkPoint);
+		}
+
+		// UI 관련
+		if(null !=_hud)
+		{
+			_hud.UpdateHP(_hp, _maxHP);
+		}
+	}
+
+	void Dead()
+	{
+		_isDead = true;
+		Debug.Log("Enemy Dead!");
+	}
+
+	// item 관련
+	[SerializeField] Item _item;	// = null;
+	int _atkPoint = 5;
+
+	public override int GetAtkPoint()
+	{
+		int itemAtkPoint = 5;
+
+		if(null!=_item)
+		{
+			itemAtkPoint = _item.GetAtkPoint();
+		}
+
+		int finalPoint = _atkPoint + itemAtkPoint;
+		return finalPoint;  //	임시
+	}
 }	// Class()

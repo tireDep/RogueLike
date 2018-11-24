@@ -6,20 +6,20 @@ public class MapTile : MonoBehaviour
 {
 	public void Init(Sprite sprite, int x, int y)
 	{
-		gameObject.GetComponent<SpriteRenderer>().sprite =sprite;	// 자기자신
+		gameObject.GetComponent<SpriteRenderer>().sprite = sprite;  // 자기자신
 		gameObject.transform.localPosition = new Vector2(x, y);
 	}   // Init()
 
 	bool _canMove = false;
 	MapObject _mapObject;
 
-	public bool CanMove()	// 내가 갈 수 있는 타일인지 유무
+	public bool CanMove()   // 내가 갈 수 있는 타일인지 유무
 	{
-		if(null!=_mapObject)	// 갈 수 잇는 오브젝트인지 판별
+		if (null != _mapObject) // 갈 수 잇는 오브젝트인지 판별
 		{
 			return _mapObject.CanMove();
 		}
-		return _canMove;	// 지형검사
+		return _canMove;    // 지형검사
 	}
 
 	public void SetCanMove(bool setPostion)
@@ -38,4 +38,8 @@ public class MapTile : MonoBehaviour
 		_mapObject = null;
 	}
 
+	public MapObject GetMapObject()
+	{
+		return _mapObject;
+	}
 } // MapTile Class

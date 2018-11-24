@@ -130,4 +130,10 @@ public class TileMap : MonoBehaviour	// : MonoBehaviour -> 상속, 이게 있어
 		MapTile mapTile = GetMapTile(tileX, tileY);
 		mapTile.ResetMapObject();
 	}
+
+	public MapObject GetMapObject(int tileX, int tileY)	//	타일위에 있는 것이 무엇
+	{
+		MapTile mapTile = GetMapTile(tileX, tileY);
+		return mapTile.GetMapObject();
+	}
 }	// TileMap Class 
