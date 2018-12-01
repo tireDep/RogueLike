@@ -16,6 +16,7 @@ public class GameScene : MonoBehaviour {
 		GameManager.Instance.SetMap(_tileMap);
 
 		_player.Init(); // Null error 해결!
+		GameManager.Instance.SetPlayer(_player);
 		// _enemy.Init();
 		int enemyCnt = 10;
 		for(int i=0;i<enemyCnt;i++)

@@ -33,6 +33,17 @@ public class MapTile : MonoBehaviour
 		mapObject.transform.position = gameObject.transform.position;
 	}
 
+	/*
+	// 나중에 수정해보기!
+	List<MapObject> _mapObjectList = new List<MapObject>();
+	public void ResetMapObject(MapObject mapObject)
+	{
+		// 인자로 넘어온 mapObject에 해당하는 요소만
+		// _mapObjectList에서 Remove
+		// 이렇게 해결 안하면 순서지켜서 코딩해야함
+	}
+	*/
+
 	public void ResetMapObject()
 	{
 		_mapObject = null;

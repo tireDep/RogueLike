@@ -33,6 +33,12 @@ public class Character : MapObject
 		_map.SetMapObject(_tileX, _tileY, this);
 	}
 
+
+	public Vector2 GetPosition()
+	{
+		return new Vector2(_tileX, _tileY);
+	}
+
 	// 방향에 맞는 animation 실행, 실질적으로 tilemap에서 움직임
 	protected void MoveLeft()
 	{
@@ -40,7 +46,7 @@ public class Character : MapObject
 
 		int newX = _tileX - 1;
 		if (true == _map.CanMove(newX, _tileY)) // 플레이어가 해당위치로 갈 수 있는지 판별
-			SetPosition(newX, _tileY);
+			Move(newX, _tileY);
 		else
 			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
 
@@ -52,7 +58,7 @@ public class Character : MapObject
 
 		int newX = _tileX + 1;
 		if (true == _map.CanMove(newX, _tileY))
-			SetPosition(newX, _tileY);
+			Move(newX, _tileY);
 		else
 			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveRight()
@@ -63,7 +69,7 @@ public class Character : MapObject
 
 		int newY = _tileY + 1;
 		if (true == _map.CanMove(_tileX, newY))
-			SetPosition(_tileX, newY);
+			Move(_tileX, newY);
 		else
 			Collide(_tileX, newY);	// 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveUp()
@@ -74,15 +80,63 @@ public class Character : MapObject
 
 		int newY = _tileY - 1;
 		if (true == _map.CanMove(_tileX, newY))
-			SetPosition(_tileX, newY);
+			Move(_tileX, newY);
 		else
 			Collide(_tileX, newY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveDown()
+		// item 관련
 
-
-	void Collide(int tileX, int tileY)	// 충돌 관련 다양한 evt 발생 함수
+	[SerializeField] Item _item;    // = null;
+	[SerializeField] GameObject _itemRoot;	// ex) 손 등
+	void Equip(MapObject mapObject)	// 장비 함수(무슨 오브젝트인지는 모름)
 	{
+		// 현 위치 플레이어의 아이템 제거
+		GameObject.Destroy(_item.gameObject);
+		// GameObject.DestroyImmediate(_item.gameObject, true);
+
+		// 새 위치의 아이템을 플레이어에게 붙임
+		mapObject.transform.parent = _itemRoot.transform;
+		mapObject.transform.localPosition = Vector3.zero;
+		mapObject.transform.localScale = Vector3.one;
+		// 이미지상 같다 붙임
+
+		_item = mapObject.GetComponent<Item>();
+		// 아이템 사용
+
+	}
+
+	void Move(int tileX, int tileY)	// 갔을 경우 evt(아이템 등)
+	{
+		if (true == _isDead)	//  죽으면 이동 x
+			return;
+
+		// 현 위치 플레이어 삭제
+		_map.ResetMapObject(_tileX, _tileY);
+		// 직전 위치 삭제(초기화)
+
+		// 새 위치 아이템 존재시
 		MapObject mapObject = _map.GetMapObject(tileX, tileY);
+		if (null != mapObject)
+		{
+			switch (mapObject.GetObjectType())
+			{
+				case MapObject.eType.ITEM:
+					Equip(mapObject);//장착
+					break;
+				default:    // 그외 다른 경우 ex) npc면 대화 등
+					break;
+			}
+		}
+
+	// 새 위치로 플레이어 바꿈 => 기존함수 : SetPosition(tileX, tileY);
+	_tileX = tileX;
+	_tileY = tileY;
+	_map.SetMapObject(_tileX, _tileY, this);
+	} // Move()
+
+	protected virtual void Collide(int tileX, int tileY)	// 충돌 관련 다양한 evt 발생 함수 -> 적이 적을 때리는 것 방지용 가상함수화
+	{
+		/*MapObject mapObject = _map.GetMapObject(tileX, tileY);
 
 		if(null!=mapObject)
 		{
@@ -94,7 +148,7 @@ public class Character : MapObject
 				default:	// 그외 다른 경우 ex) npc면 대화 등
 					break;
 			}
-		}
+		}*/
 	}   // Collide()
 
 	public override void Attacked(MapObject attackObject)  // 가상함수화!
@@ -107,7 +161,7 @@ public class Character : MapObject
 		Damage(attackObject);
 	}
 
-	bool _isDead = false;
+	protected bool _isDead = false;
 	int _hp = 100;
 	int _maxHP = 100;	// 최대 hp
 	void Damage(MapObject attackObject)
@@ -143,8 +197,6 @@ public class Character : MapObject
 		Debug.Log("Enemy Dead!");
 	}
 
-	// item 관련
-	[SerializeField] Item _item;	// = null;
 	int _atkPoint = 5;
 
 	public override int GetAtkPoint()

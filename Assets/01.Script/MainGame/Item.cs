@@ -14,6 +14,8 @@ public class Item : MapObject
 
 	void Start()
 	{
+		_type = eType.ITEM;
+		_atkPoint = Random.Range(10, 20);
 	}
 
 	void Update ()

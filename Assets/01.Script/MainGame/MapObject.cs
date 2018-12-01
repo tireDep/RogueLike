@@ -9,7 +9,9 @@ public class MapObject : MonoBehaviour
 
 	public enum eType
 	{
-		ENEMY   // , NPC etc..
+		ENEMY,
+		ITEM,
+		PLAYER	// , NPC etc..
 	};  // mapObject type
 
 	// Charater에서 이동, 공통적인 부분 -> 상향!
@@ -54,8 +56,7 @@ public class MapObject : MonoBehaviour
 		return _canMove;
 	}
 
-	eType _type = eType.ENEMY;	// Enemy
-
+	protected eType _type = eType.ENEMY;	// Enemy 
 
 	public eType GetObjectType()
 	{
