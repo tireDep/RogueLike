@@ -8,47 +8,21 @@ public class Character : MapObject
 	[SerializeField] CharacterModel _model;
 	[SerializeField] CharacterHud _hud;
 
-	int _tileX, _tileY; // 타일 좌표
-	TileMap _map = null;    // 멤버변수
-
-	public void Init()  // GameScene에서 실행됨, Null error 해결
-	{
-		// 캐릭터 맵상에 random 배치
-		_map = GameManager.Instance.GetMap();
-		_canMove = false;
-
-		int x = 0;
-		int y = 0;
-		
-		while (true)
-		{
-			x = Random.Range(0, 32);
-			y = Random.Range(0, 32);
-
-			if (true == _map.CanMove(x, y))
-				break;
-		}
-
-		_tileX = x;
-		_tileY = y;
-		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x), 해당위치의 타일
-		_map.SetMapObject(_tileX, _tileY, this);
-
-		if(null!=_hud)
-		{
-			_hp = _maxHP;
-		}
-	}
-
-
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update ()
+	{
+	}
+
+	public override void Init()  // 상속, 재정의
+	{
+		base.Init();	// 공통적인 것은 부모클래스것 사용, 나머지 부분만 추가함
+		if (null != _hud)   // 이부분만 캐릭터에 적용 -> 가상함수 이용(하향)
+			_hp = _maxHP;
 	}
 
 	void SetPosition(int newX, int newY)

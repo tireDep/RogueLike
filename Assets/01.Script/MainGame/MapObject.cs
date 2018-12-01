@@ -12,6 +12,35 @@ public class MapObject : MonoBehaviour
 		ENEMY   // , NPC etc..
 	};  // mapObject type
 
+	// Charater에서 이동, 공통적인 부분 -> 상향!
+	protected TileMap _map = null;    // 멤버변수
+	protected int _tileX, _tileY; // 타일 좌표
+
+	public virtual void Init()  // GameScene에서 실행됨, Null error 해결
+	{
+		// 캐릭터 맵상에 random 배치
+		_map = GameManager.Instance.GetMap();
+		_canMove = false;
+
+		int x = 0;
+		int y = 0;
+
+		while (true)
+		{
+			x = Random.Range(0, 32);
+			y = Random.Range(0, 32);
+
+			if (true == _map.CanMove(x, y))
+				break;
+		}
+
+		_tileX = x;
+		_tileY = y;
+		// 타일기반게임 이동 -> 타일간 이동(x, y좌표 이동 x), 해당위치의 타일
+		_map.SetMapObject(_tileX, _tileY, this);
+	}
+
+
 	void Start()
 	{
 	}
@@ -26,6 +55,7 @@ public class MapObject : MonoBehaviour
 	}
 
 	eType _type = eType.ENEMY;	// Enemy
+
 
 	public eType GetObjectType()
 	{
