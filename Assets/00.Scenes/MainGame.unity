@@ -140,10 +140,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 225643401}
-  - {fileID: 814109717}
   - {fileID: 989257240}
   m_Father: {fileID: 1455583456}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &22670473
 MonoBehaviour:
@@ -296,7 +295,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1455583456}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &509058108
 MonoBehaviour:
@@ -309,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0de6c54d2f45c4d8684ccf1715273a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileObjectPrefabs: {fileID: 1460273180572580, guid: 8e52068aa8c3399439b662f45e6ccab0,
+  _tileObjectPrefabs: {fileID: 1825489273450394, guid: 03d5043ceb5483e4ab092bdca97b6986,
     type: 2}
 --- !u!1 &593379767
 GameObject:
@@ -421,7 +420,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 8.131485
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -447,8 +446,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 22670472}
-  m_RootOrder: 1
+  m_Father: {fileID: 1455583456}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &989257239
 GameObject:
@@ -477,7 +476,7 @@ Transform:
   m_Children:
   - {fileID: 1443547847}
   m_Father: {fileID: 22670472}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1102911698
 Prefab:
@@ -577,8 +576,9 @@ Transform:
   m_GameObject: {fileID: 1455583454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.9375, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 814109717}
   - {fileID: 509058107}
   - {fileID: 22670472}
   m_Father: {fileID: 0}

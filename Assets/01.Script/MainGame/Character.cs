@@ -84,7 +84,24 @@ public class Character : MapObject
 		else
 			Collide(_tileX, newY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveDown()
-		// item 관련
+
+	protected void MovetoClick(Vector3 mouseClick)	// 클릭으로 이동함 => 현 상황 순간이동
+	{
+		// 0 ~ 60 / 0 ~ 32
+		_model.CharDownWalk();
+
+		int newX = (int) Mathf.Round(mouseClick.x);
+		int newY = (int) Mathf.Round(mouseClick.y);
+
+		Debug.Log(newX + "/" + newY);
+		if (true == _map.CanMove(newX, newY))
+			Move(newX, newY);
+		else
+			Collide(newX, newY);  // 가고자 하는 타일에서 충돌이 일어남
+	}   // MovetoClick(Vector3 mouseClick)
+
+
+	// item 관련
 
 	[SerializeField] Item _item;    // = null;
 	[SerializeField] GameObject _itemRoot;	// ex) 손 등
