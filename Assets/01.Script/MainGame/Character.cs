@@ -118,6 +118,7 @@ public class Character : MapObject
         Debug.Log(destX + "/" + destY); // 좌표 출력
         int destcntX = Mathf.Abs(destX - _tileX);
         int destcntY = Mathf.Abs(destY - _tileY);
+        // 출발~목적지 거리
 
         if (true == _map.CanMove(destX, destY))
         {
