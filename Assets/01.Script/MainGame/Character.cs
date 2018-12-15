@@ -85,20 +85,73 @@ public class Character : MapObject
 			Collide(_tileX, newY);  // 가고자 하는 타일에서 충돌이 일어남
 	}   // MoveDown()
 
-	protected void MovetoClick(Vector3 mouseClick)	// 클릭으로 이동함 => 현 상황 순간이동
+    private GameObject particle;    // ray관련?
+    int destX, destY, destZ;    // 목적지 좌표 변수들
+    void GetMousePos()  // 클릭좌표 및 목적지 설정
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray))
+            Instantiate(particle, transform.position, transform.rotation);
+
+        destX = (int)Mathf.Round(ray.origin.x);
+        destY = (int)Mathf.Round(ray.origin.y);
+        destZ = 0;  // z축은 사용 x
+    } // GetMousePos()
+
+    protected void MovetoClick()	// 클릭으로 이동함 => 현 상황 순간이동
 	{
-		// 0 ~ 60 / 0 ~ 32
-		_model.CharDownWalk();
+        GetMousePos();  // 클릭좌표를 받고, 목적지로 설정
 
-		int newX = (int) Mathf.Round(mouseClick.x);
-		int newY = (int) Mathf.Round(mouseClick.y);
+        Debug.Log(destX + "/" + destY); // 좌표 출력
+        if (true == _map.CanMove(destX, destY))
+        {
+            _model.CharDownWalk();  // animation 출력
+            Move(destX, destY);
+        }
+        else
+            Collide(destX, destY);  // 가고자 하는 타일에서 충돌이 일어남
 
-		Debug.Log(newX + "/" + newY);
-		if (true == _map.CanMove(newX, newY))
-			Move(newX, newY);
+        //현위치 좌표에서 8방향으로 거리 계산, 합이 가장 적은곳으로 이동
+        /*
+        int checkX = -1;
+        int checkY = 1;
+
+        int moveXValue;
+        int moveYValue; // 상하좌우
+
+        int destXValue;  
+        int destYValue; // 장애물 무시 가장 빠른 길
+        int plusValue;  // 다 더한 값
+
+        int[] checkShort = new int[9];  //  길찾기 저장용
+
+		Debug.Log(destX + "/" + destY);
+		if (true == _map.CanMove(destX, destY))
+        {
+            for(int i=0;i<3;i++)
+            {
+                for(int j=0;j<3;j++)
+                {
+                    moveXValue = checkX + _tileX;
+                    moveYValue = checkY + _tileY;
+                    // 현 위치에서 갈수 있는 방향
+
+                    destXValue = destX - moveXValue;
+                    destYValue = destY - moveYValue;
+                    // 장애물 무시 빠른 길
+
+                    plusValue = moveXValue + moveYValue + destXValue + destYValue;
+                    checkShort[i * 3 + j] = plusValue;
+                    checkX++;
+                }
+                checkY--;
+                checkX = -1;
+                // 변수 초기화
+            }
+        }
 		else
-			Collide(newX, newY);  // 가고자 하는 타일에서 충돌이 일어남
-	}   // MovetoClick(Vector3 mouseClick)
+			Collide(destX, destY);  // 가고자 하는 타일에서 충돌이 일어남*/
+    }   // MovetoClick(Vector3 mouseClick)
 
 
 	// item 관련
