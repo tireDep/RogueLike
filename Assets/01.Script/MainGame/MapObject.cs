@@ -16,7 +16,7 @@ public class MapObject : MonoBehaviour
 
 	// Charater에서 이동, 공통적인 부분 -> 상향!
 	protected TileMap _map = null;    // 멤버변수
-	protected int _tileX, _tileY; // 타일 좌표
+	protected static int _tileX, _tileY; // 타일 좌표
 
 	public virtual void Init()  // GameScene에서 실행됨, Null error 해결
 	{

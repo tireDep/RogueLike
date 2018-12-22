@@ -31,19 +31,32 @@ public class Enemy : Character	// Character 상속
 		// 기초적인 길찾기 -> 목표가 있으면 일단 움직임(장애물 등 신경 x)
 		Character player = GameManager.Instance.GetPlayer();
 		Vector2 playerPos = player.GetPosition();
-		// 플레이어를 가지고오고 위치 확인
+        // 플레이어를 가지고오고 위치 확인
 
+        int newTileX = _tileX;
+        int newTileY = _tileY;
+        if (_tileX > playerPos.x)
+        {
+            _model.CharLeftWalk();  // 방향 animation, _model : script => root에 존재함(작업의 편리함)
+            newTileX = _tileX - 1;
+        }
 		if (_tileX < playerPos.x)
-			MoveRight();
-		else if (_tileX > playerPos.x)
-			MoveLeft();
-
-		if (_tileY < playerPos.y)
-			MoveUp();
-		else if (_tileY > playerPos.y)
-			MoveDown();
-
-	}
+        {
+            _model.CharRightWalk();
+            newTileX = _tileX + 1;
+        }
+        if (_tileY < playerPos.y)
+        {
+            _model.CharUpWalk();
+            newTileY = _tileY + 1;
+        }
+        if (_tileY > playerPos.y)
+        {
+            _model.CharDownWalk();
+            newTileY = _tileY - 1;
+        }
+        MovePos(newTileX, newTileY);
+    }
 
 	protected override void Collide(int tileX, int tileY)    // 충돌 관련 다양한 evt 발생 함수 -> 적이 적을 때리는 것 방지용 가상함수화
 	{

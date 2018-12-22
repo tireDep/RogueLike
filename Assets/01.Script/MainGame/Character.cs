@@ -5,11 +5,11 @@ using UnityEngine;
 public class Character : MapObject
 {
 	// Unity 
-	[SerializeField] CharacterModel _model;
+	[SerializeField] protected CharacterModel _model;
 	[SerializeField] CharacterHud _hud;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
 	{
 	}
 	
@@ -17,6 +17,38 @@ public class Character : MapObject
 	void Update ()
 	{
 	}
+
+    int destcntX = 0;
+    int destcntY = 0;
+    protected bool _isMoving = false;
+    protected void Move()
+    {
+        if (true == _map.CanMove((int)_destPos.x, (int)_destPos.y))
+        {
+            int moveX = EasyGetDirection(_tileX, (int)_destPos.x);
+            int moveY = EasyGetDirection(_tileY, (int)_destPos.y);
+            //_model.CharDownWalk();  // animation 출력
+
+            if (true == _map.CanMove(moveX, moveY))
+                Move(moveX, moveY);
+            else
+                Collide(moveX, moveY);
+
+            destcntX--;
+            destcntY--;
+        }
+        else
+        {
+            Collide((int)_destPos.x, (int)_destPos.y);  // 가고자 하는 타일에서 충돌이 일어남
+            destcntX = 0;
+            destcntY = 0;
+        }
+
+        if (0 == destcntX && 0 == destcntY)
+        {
+            _isMoving = false;
+        }
+    }
 
 	public override void Init()  // 상속, 재정의
 	{
@@ -39,63 +71,33 @@ public class Character : MapObject
 		return new Vector2(_tileX, _tileY);
 	}
 
-	// 방향에 맞는 animation 실행, 실질적으로 tilemap에서 움직임
-	protected void MoveLeft()
-	{
-		_model.CharLeftWalk();  // 방향 animation, _model : script => root에 존재함(작업의 편리함)
+    // 방향에 맞는 animation 실행, 실질적으로 tilemap에서 움직임
 
-		int newX = _tileX - 1;
-		if (true == _map.CanMove(newX, _tileY)) // 플레이어가 해당위치로 갈 수 있는지 판별
-			Move(newX, _tileY);
-		else
-			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
-
-	}   // MoveLeft()
-
-	protected void MoveRight()
-	{
-		_model.CharRightWalk();
-
-		int newX = _tileX + 1;
-		if (true == _map.CanMove(newX, _tileY))
-			Move(newX, _tileY);
-		else
-			Collide(newX, _tileY);  // 가고자 하는 타일에서 충돌이 일어남
-	}   // MoveRight()
-
-	protected void MoveUp()
-	{
-		_model.CharUpWalk();
-
-		int newY = _tileY + 1;
-		if (true == _map.CanMove(_tileX, newY))
-			Move(_tileX, newY);
-		else
-			Collide(_tileX, newY);	// 가고자 하는 타일에서 충돌이 일어남
-	}   // MoveUp()
-
-	protected void MoveDown()
-	{
-		_model.CharDownWalk();
-
-		int newY = _tileY - 1;
-		if (true == _map.CanMove(_tileX, newY))
-			Move(_tileX, newY);
-		else
-			Collide(_tileX, newY);  // 가고자 하는 타일에서 충돌이 일어남
-	}   // MoveDown()
-
-    private GameObject particle;    // ray관련?
-    int destX, destY, destZ;    // 목적지 좌표 변수들
-    void GetMousePos()  // 클릭좌표 및 목적지 설정
+    protected void MovePos(int tileX, int tileY)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (true == _map.CanMove(tileX, tileY)) // 플레이어가 해당위치로 갈 수 있는지 판별
+        {
+            Move(tileX, tileY);
+        }
+        else
+        {
+            Collide(tileX, tileY);  // 가고자 하는 타일에서 충돌이 일어남
+        }
+    }
+    
+
+    private GameObject particle;    
+    Vector3 _destPos = Vector3.zero;
+    void SetDestPos(Vector3 destPos)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(destPos);
         if (Physics.Raycast(ray))
             Instantiate(particle, transform.position, transform.rotation);
 
-        destX = (int)Mathf.Round(ray.origin.x);
-        destY = (int)Mathf.Round(ray.origin.y);
-        destZ = 0;  // z축은 사용 x
+        int destX = (int)Mathf.Round(ray.origin.x);
+        int destY = (int)Mathf.Round(ray.origin.y);
+        int destZ = 0;  // z축은 사용 x
+        _destPos = new Vector3(destX, destY, destZ);
     } // GetMousePos()
 
     int EasyGetDirection(int currentTile, int destTile) // 목적지까지의 좌표값 계산
@@ -113,39 +115,21 @@ public class Character : MapObject
 
     protected void MovetoClick()	// 클릭으로 이동함 => 현 상황 순간이동
 	{
-        GetMousePos();  // 클릭좌표를 받고, 목적지로 설정
+        Vector3 clickPos = Input.mousePosition;
+        SetDestPos(clickPos);  // 클릭좌표를 받고, 목적지로 설정
 
-        Debug.Log(destX + "/" + destY); // 좌표 출력
-        int destcntX = Mathf.Abs(destX - _tileX);
-        int destcntY = Mathf.Abs(destY - _tileY);
-        // 출발~목적지 거리
-
-        if (true == _map.CanMove(destX, destY))
-        {
-            while(destcntX>=0||destcntY>=0)
-            {
-                int moveX = EasyGetDirection(_tileX, destX);
-                int moveY = EasyGetDirection(_tileY, destY);
-                //_model.CharDownWalk();  // animation 출력
-
-                if (true == _map.CanMove(moveX, moveY))
-                    Move(moveX, moveY);
-                else
-                    Collide(moveX, moveY);
-
-                destcntX--;
-                destcntY--;
-            }
-        }
-        else
-            Collide(destX, destY);  // 가고자 하는 타일에서 충돌이 일어남
+        Debug.Log(_destPos); // 좌표 출력
+        destcntX = Mathf.Abs((int)_destPos.x - _tileX);
+        destcntY = Mathf.Abs((int)_destPos.y - _tileY);
+        _isMoving = true;
+        Move();
     }   // MovetoClick(Vector3 mouseClick)
 
 
 	// item 관련
 
-	[SerializeField] Item _item;    // = null;
-	[SerializeField] GameObject _itemRoot;	// ex) 손 등
+	[SerializeField] Item _item = null;
+    [SerializeField] GameObject _itemRoot = null;	// ex) 손 등
 	void Equip(MapObject mapObject)	// 장비 함수(무슨 오브젝트인지는 모름)
 	{
 		// 현 위치 플레이어의 아이템 제거
