@@ -69,6 +69,7 @@ public class Player : Character // Character 상속
             {
                 if (Input.GetKeyDown(dic.Key))
                 {
+                    _isMoving = false;  // 클릭이동 x
                     dic.Value();
                     MovePos(newTileX, newTileY);
                 }

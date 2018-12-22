@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 660404}
   - component: {fileID: 1443547849}
+  - component: {fileID: 660405}
   m_Layer: 0
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
@@ -142,6 +143,18 @@ Transform:
   m_Father: {fileID: 1236996977}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &660405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 660403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55c3dfcbdc28a44d9eeee52de899afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _atkPoint: 1
 --- !u!1 &22670471
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _model: {fileID: 225643403}
-  _hud: {fileID: 114304796702611400, guid: 9a7aa0ea477cba14999cfc222ffe5045, type: 2}
+  _hud: {fileID: 0}
   _item: {fileID: 1443547849}
   _itemRoot: {fileID: 989257239}
 --- !u!1 &225643400
@@ -630,7 +643,7 @@ MonoBehaviour:
   - {fileID: 1224179308705450, guid: 2ee77d464bd0b344fbef1de49c999bc1, type: 2}
   - {fileID: 1581515068144544, guid: d0b88625b2ad35c45830787fd4aff95b, type: 2}
   - {fileID: 1058267565856266, guid: 9300ed326c358944a8836f5edd5e3887, type: 2}
-  _enemyPrefab: {fileID: 1135946231517836, guid: 9a7aa0ea477cba14999cfc222ffe5045,
+  _enemyPrefab: {fileID: 1648729725588206, guid: c203cf782470ce346a4a3ec9f6845ad3,
     type: 2}
   _tileMap: {fileID: 509058108}
   _player: {fileID: 22670473}
